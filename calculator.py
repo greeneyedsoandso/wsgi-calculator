@@ -33,7 +33,16 @@ from functools import reduce
 
 def index(*args):
     """returns a set of instructions"""
-    instructions = '<h1>Calculator</h1>'
+    instructions = f'<h1>Calculator</h1><p>This WSGI calculator can add, subtract, multiply, ' \
+                   'and divide. To perform basic math, put your problem into the URL like ' \
+                   'so:</p>' \
+                   '<p>http://localhost:8080/<span style="color:red">operation</span>/<span ' \
+                   'style="color:green">integer</span>/<span style="color:green">integer</span></p>' \
+                   '<p>For example, addition would look like this:</p><a ' \
+                   'href="http://localhost:8080/add/2/2" ' \
+                   'target="_blank">http://localhost:8080/add/2/2</a><p>You may use more than two ' \
+                   'integers. Supported operations are "add", "subtract", "multiply", ' \
+                   'and "divide".'
     return instructions
 
 
@@ -66,10 +75,6 @@ def resolve_path(path):
     Should return two values: a callable and an iterable of
     arguments.
     """
-
-    # TODO: Provide correct values for func and args. The examples provide the correct *syntax*,
-    #  but you should determine the actual values of func and args using the path.
-
     path = path.strip('/').split('/')
     func_name = path[0]
     args_strings = path[1:]
