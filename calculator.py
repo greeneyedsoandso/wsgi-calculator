@@ -27,6 +27,14 @@ Consider the following URL/Response body pairs as tests:
 ```
 """
 import traceback
+from math import prod
+from functools import reduce
+
+
+def index(*args):
+    """returns a set of instructions"""
+    instructions = '<h1>Calculator</h1>'
+    return instructions
 
 
 def add(*args):
@@ -37,22 +45,20 @@ def add(*args):
 
 def subtract(*args):
     """ Returns a STRING with the sum of the arguments """
-    result = ''
+    result = reduce(lambda a, b: a - b, args)
     return str(result)
 
 
 def multiply(*args):
     """ Returns a STRING with the sum of the arguments """
-    result = ''
+    result = prod(args)
     return str(result)
 
 
 def divide(*args):
     """ Returns a STRING with the sum of the arguments """
-    result = ''
+    result = reduce(lambda a, b: a/b, args)
     return str(result)
-
-# TODO: Add functions for handling more arithmetic operations.
 
 
 def resolve_path(path):
@@ -69,6 +75,7 @@ def resolve_path(path):
     args_strings = path[1:]
     args = [int(_) for _ in args_strings]
     funcs = {
+        '': index,
         'add': add,
         'subtract': subtract,
         'multiply': multiply,
