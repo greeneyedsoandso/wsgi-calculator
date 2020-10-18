@@ -26,16 +26,31 @@ Consider the following URL/Response body pairs as tests:
   http://localhost:8080/               => <html>Here's how to use this page...</html>
 ```
 """
+import traceback
 
 
 def add(*args):
     """ Returns a STRING with the sum of the arguments """
+    result = sum(args)
+    return str(result)
 
-    # TODO: Fill sum with the correct value, based on the
-    # args provided.
-    sum = "0"
 
-    return sum
+def subtract(*args):
+    """ Returns a STRING with the sum of the arguments """
+    result = ''
+    return str(result)
+
+
+def multiply(*args):
+    """ Returns a STRING with the sum of the arguments """
+    result = ''
+    return str(result)
+
+
+def divide(*args):
+    """ Returns a STRING with the sum of the arguments """
+    result = ''
+    return str(result)
 
 # TODO: Add functions for handling more arithmetic operations.
 
@@ -46,13 +61,23 @@ def resolve_path(path):
     arguments.
     """
 
-    # TODO: Provide correct values for func and args. The
-    # examples provide the correct *syntax*, but you should
-    # determine the actual values of func and args using the
-    # path.
-    func = add
-    args = ['25', '32']
+    # TODO: Provide correct values for func and args. The examples provide the correct *syntax*,
+    #  but you should determine the actual values of func and args using the path.
 
+    path = path.strip('/').split('/')
+    func_name = path[0]
+    args_strings = path[1:]
+    args = [int(_) for _ in args_strings]
+    funcs = {
+        'add': add,
+        'subtract': subtract,
+        'multiply': multiply,
+        'divide': divide,
+    }
+    try:
+        func = funcs[func_name]
+    except KeyError:
+        raise NameError
     return func, args
 
 
@@ -68,6 +93,9 @@ def application(environ, start_response):
     except NameError:
         status = "404 Not Found"
         body = "<h1>Not Found</h1>"
+    except ZeroDivisionError:
+        status = "422 Unprocessable Entity"
+        body = "<h1>We don't divide by zero in this universe.</h1>"
     except Exception:
         status = "500 Internal Server Error"
         body = "<h1>Internal Server Error</h1>"
@@ -75,8 +103,7 @@ def application(environ, start_response):
     finally:
         headers.append(('Content-length', str(len(body))))
         start_response(status, headers)
-        return [body.encode('utf8')]    #
-    # TODO (bonus): Add error handling for a user attempting to divide by zero.
+        return [body.encode('utf8')]
 
 
 if __name__ == '__main__':
