@@ -17,9 +17,9 @@ class WebTestCase(unittest.TestCase):
             stderr=subprocess.PIPE,
         )
 
-    def tearDown(self):
-        self.server_process.kill()
-        self.server_process.communicate()
+    # def tearDown(self):
+    #     self.server_process.kill()
+    #     self.server_process.communicate()
 
     def get_response(self, url):
         """
