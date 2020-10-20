@@ -6,9 +6,9 @@ import random
 
 class WebTestCase(unittest.TestCase):
     """tests for the WSGI Calculator"""
-
-    def setUp(self):
-        self.server_process = subprocess.Popen(
+    @classmethod
+    def setUpClass(cls):
+        WebTestCase.server_process = subprocess.Popen(
             [
                 "python",
                 "calculator.py"
@@ -16,10 +16,7 @@ class WebTestCase(unittest.TestCase):
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
         )
-
-    # def tearDown(self):
-    #     self.server_process.kill()
-    #     self.server_process.communicate()
+        print("set up")
 
     def get_response(self, url):
         """
@@ -124,6 +121,12 @@ class WebTestCase(unittest.TestCase):
 
         # We're just testing if the word "add" is present in the index
         self.assertIn("add".encode(), response.read())
+
+    @classmethod
+    def tearDownClass(cls):
+        WebTestCase.server_process.kill()
+        WebTestCase.server_process.communicate()
+        print("tear down")
 
 
 if __name__ == '__main__':
